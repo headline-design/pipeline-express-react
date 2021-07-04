@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "./static/css/main.8af9404e.chunk.css",
+    "main.js": "./static/js/main.7312733f.chunk.js",
+    "main.js.map": "./static/js/main.7312733f.chunk.js.map",
+    "runtime-main.js": "./static/js/runtime-main.1ba10e03.js",
+    "runtime-main.js.map": "./static/js/runtime-main.1ba10e03.js.map",
+    "static/js/2.be469c0d.chunk.js": "./static/js/2.be469c0d.chunk.js",
+    "static/js/2.be469c0d.chunk.js.map": "./static/js/2.be469c0d.chunk.js.map",
+    "index.html": "./index.html",
+    "precache-manifest.73bf247e6aafea2ab0dfd117ad8ac953.js": "./precache-manifest.73bf247e6aafea2ab0dfd117ad8ac953.js",
+    "service-worker.js": "./service-worker.js",
+    "static/css/main.8af9404e.chunk.css.map": "./static/css/main.8af9404e.chunk.css.map",
+    "static/js/2.be469c0d.chunk.js.LICENSE.txt": "./static/js/2.be469c0d.chunk.js.LICENSE.txt",
+    "static/media/pipeline-express.jpg": "./static/media/pipeline-express.c992dc67.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.1ba10e03.js",
+    "static/js/2.be469c0d.chunk.js",
+    "static/css/main.8af9404e.chunk.css",
+    "static/js/main.7312733f.chunk.js"
+  ]
+}
