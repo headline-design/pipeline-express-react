@@ -1,4 +1,4 @@
-# Connect to Algorand a send a transaction in minutes. 
+# Connect and send Algorand transactions in minutes. 
 
 > Pipeline Express is an ultra-light version of Pipeline UI React Library. The library provides two button components with hard-coded onClick events to greatly simplify the process of retrieving a wallet address from MyAlgo connect, signing and sending transactions.
 
