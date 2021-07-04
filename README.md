@@ -29,7 +29,7 @@ After replacing, save the changes and re-run:
 npm run build
 ```
 ### Try it in CodeSandbox (or your IDE of choice)
-Copy and paste the following code, instal the dependencies, and send an Algorand transaction in seconds!
+Copy and paste the following code, install the dependencies and send an Algorand transaction in seconds!
 
 ```jsx
 import React, {Component} from 'react'
