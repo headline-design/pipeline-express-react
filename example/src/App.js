@@ -48,7 +48,7 @@ class App extends Component {
         </label>
       </form>
       <AlgoSendButton
-      asset={"Algorand"} //If ASA, must be a numeric index value
+      index={0} //If ASA, must be a numeric index value !== 0
       recipient={this.state.recipient} //string value
       amount={this.state.amount} //integer value in micro Algos
       note={this.state.note} //string value
@@ -57,7 +57,7 @@ class App extends Component {
       context={this}
       returnTo={"txID"}// string value of state key to return the transaction id
       />
-      <h3>{"Transaction ID: " + this.state.txID}</h3>
+      <h3>{"Transaction ID: " + this.state.txID.slice(1, -1)}</h3>
 </div>
   }
 }

@@ -1,137 +1,106 @@
 import React from 'react'
 import styles from './styles.module.css'
 import MyAlgo from '@randlabs/myalgo-connect'
-import algosdk from 'algosdk'
-export class Pipeline {
 
+export class Pipeline {
   static init() {
-    return new MyAlgo();
+    return new MyAlgo()
   }
 
   static async connect(wallet) {
     try {
-      const accounts = await wallet.connect();
-      let item1 = accounts[0];
-      item1 = item1["address"];
-      return item1;
-    }
-    catch (err) {
-      console.error(err);
+      const accounts = await wallet.connect()
+      let item1 = accounts[0]
+      item1 = item1['address']
+      return item1
+    } catch (err) {
+      console.error(err)
     }
   }
 
-  static async send(address, amt = 1, note = "Transaction note", sendingAddress, wallet) {
+  static async send(address, amt, myNote, sendingAddress, wallet, index = 0) {
+    const algodToken = '0'
+    const paramServer = 'https://algoexplorerapi.io/v2/transactions/params'
+    const transServer = 'https://algoexplorerapi.io/v2/transactions'
 
-    const algodToken = { 'X-API-Key': 'dmONugeHOX2DC8nDb3v8m6Bo9cI3WHbW6Ntt4QCZ' };
-    const algodServer = "https://mainnet-algorand.api.purestake.io/ps2";
-    const algodPort = "";
+    var buf = new Array(myNote.length)
+    var encodedNote = new Uint8Array(buf)
+    for (var i = 0, strLen = myNote.length; i < strLen; i++) {
+      encodedNote[i] = myNote.charCodeAt(i)
+    }
 
+    console.log('My encoded note: ' + encodedNote)
 
-    const data = await (async () => {
-      try {
-        const algodClient = new algosdk.Algodv2(algodToken, algodServer, '');
-        const params = await algodClient.getTransactionParams().do();
+    try {
+      const params = await (await fetch(paramServer)).json()
 
-        const txn = {
-          ...params,
-          type: 'pay',
-          from: sendingAddress,
-          to: address,
-          amount: amt,
-          note: new Uint8Array(Buffer.from(note)),
-        };
-
-        const signedTxn = await wallet.signTransaction(txn);
-
-        await algodClient.sendRawTransaction(signedTxn.blob).do();
-
-        return signedTxn.txID;
-
+      let txn = {
+        from: sendingAddress,
+        to: address,
+        amount: parseInt(amt),
+        note: encodedNote,
+        genesisID: 'mainnet-v1.0',
+        genesisHash: 'wGHE2Pwdvd7S12BL5FaOP20EGYesN73ktiC1qzkkit8=',
+        type: 'pay',
+        flatFee: true,
+        fee: 1000,
+        firstRound: params['last-round'],
+        lastRound: params['last-round'] + 1000,
       }
-      catch (err) {
-        console.error(err);
+
+      if (index !== 0) {
+        txn.type = 'axfer'
+        txn.assetIndex = parseInt(index)
       }
-    })();
 
-    return JSON.stringify(data);
-  }
+      console.log(txn)
 
-  static async sendASA(address, amt = 1, note = "Transaction note", sendingAddress, wallet, asaNumb) {
+      const signedTxn = await wallet.signTransaction(txn)
 
-    const algodToken = { 'X-API-Key': 'dmONugeHOX2DC8nDb3v8m6Bo9cI3WHbW6Ntt4QCZ' };
-    const algodServer = "https://mainnet-algorand.api.purestake.io/ps2";
-    const algodPort = "";
+      let transactionID = await fetch(transServer, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-binary',
+        },
+        body: signedTxn.blob,
+      })
+        .then(response => response.json())
+        .then(data => {
+          return JSON.stringify(data.txId);
+        })
+        .catch(error => {
+          console.error('Error:', error)
+        })
 
-
-    const data = await (async () => {
-      try {
-        const algodClient = new algosdk.Algodv2(algodToken, algodServer, '');
-        const params = await algodClient.getTransactionParams().do();
-
-        const txn = {
-          ...params,
-          type: 'axfer',
-          assetIndex: asaNumb,
-          from: sendingAddress,
-          to: address,
-          amount: amt,
-          note: new Uint8Array(Buffer.from(note)),
-        };
-
-        const signedTxn = await wallet.signTransaction(txn);
-
-        await algodClient.sendRawTransaction(signedTxn.blob).do();
-
-        return signedTxn.txID;
-
-      }
-      catch (err) {
-        console.error(err);
-      }
-    })();
-
-    return JSON.stringify(data);
+      return transactionID
+    } catch (err) {
+      console.error(err)
+    }
   }
 }
 
 export const AlgoSendButton = ({
-  asset,
+  index,
   recipient,
   amount,
   note,
   myAddress,
   wallet,
   context,
-  returnTo,
-  ...props
+  returnTo
 }) => {
   return (
     <button
-    {...props}
       className={styles.AlgoSendButton}
-      onClick={() => {
-        if (asset == 'Algorand') {
+      onClick={
+        () => {
           Pipeline.send(
             recipient,
             parseInt(amount),
             note,
             myAddress,
-            wallet
-          ).then(data => {
-            if (typeof data !== 'undefined') {
-              const object = {}
-              object[returnTo] = data
-              context.setState(object)
-            }
-          })
-        } else {
-          Pipeline.sendASA(
-            recipient,
-            parseInt(amount),
-            note,
-            myAddress,
             wallet,
-            parseInt(asset)
+            index
           ).then(data => {
             if (typeof data !== 'undefined') {
               const object = {}
@@ -140,18 +109,16 @@ export const AlgoSendButton = ({
             }
           })
         }
-      }}
+      }
     >
       Send
     </button>
   )
 }
 
-export const AlgoButton = ({ wallet, context, returnTo, ...props}) => {
+export const AlgoButton = ({ wallet, context, returnTo}) => {
   return (
     <button
-    {...props}
-    size={"24px"}
       className={styles.AlgoButton}
       onClick={() => {
         Pipeline.connect(wallet).then(accounts => {
