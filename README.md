@@ -80,7 +80,7 @@ class App extends Component {
         </label>
       </form>
       <AlgoSendButton
-      asset={"Algorand"} //If ASA, must be a numeric index value
+      index={0} //If ASA, must be a numeric index value > 0
       recipient={this.state.recipient} //string value
       amount={this.state.amount} //integer value in micro Algos
       note={this.state.note} //string value
