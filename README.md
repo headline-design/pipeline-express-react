@@ -16,18 +16,7 @@ npm run start
 
 ## Usage
 See included example.
-### Changing the API
-The library includes an api key and node address for testing purposes. It is highly recommended to change these before deploying to production. To change these values, navigate to /src/index.js where you will see the following code (currently on line 25):
 
-```jsx
-  const algodToken = { 'X-API-Key': 'dmONugeHOX2DC8nDb3v8m6Bo9cI3WHbW6Ntt4QCZ' };
-  const algodServer = "https://mainnet-algorand.api.purestake.io/ps2";
-  const algodPort = "";
-```
-After replacing, save the changes and re-run:
-```bash
-npm run build
-```
 ### Try it in CodeSandbox (or your IDE of choice)
 Copy and paste the following code, install the dependencies and send an Algorand transaction in seconds!
 
