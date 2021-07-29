@@ -12,3 +12,15 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.form-control {
+  opacity: 1;
+}
+
+.form-label {
+  opacity: 1;
+}
+
+.card {
+  opacity: 1;
+}
