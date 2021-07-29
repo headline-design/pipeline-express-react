@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import { AlgoButton, AlgoSendButton, Pipeline} from 'pipeline-express-react'
-import 'pipeline-express-react/dist/index.css'
+import './index.css'
 import logo from './pipeline-express.jpg'
 
 const myAlgoWallet = Pipeline.init();
