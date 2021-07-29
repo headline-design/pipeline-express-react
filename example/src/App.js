@@ -30,21 +30,21 @@ class App extends Component {
   }
   
   render() {
-    return <div align="center"><img alt="Pipeline Express" src={logo} width="300"></img><br></br>
+    return <div align="center" class="card"><img alt="Pipeline Express" src={logo} width="300"></img><br></br>
       <AlgoButton wallet={myAlgoWallet} context={this} returnTo={"myAddress"} />
       <h3>{"My Address: " + this.state.myAddress}</h3>
       <form >
-        <label>
+        <label class= "form-label">
           Recipient:
-          <input type="text" onChange={this.inputRecipient} />
+          <input type="text" class="form-control" onChange={this.inputRecipient} />
         </label><br></br>
-        <label>
+        <label class="form-label">
           Amount:
-          <input type="number" onChange={this.inputAmount} />
+          <input type="number" class="form-control" onChange={this.inputAmount} />
         </label>
-        <label><br></br>
+        <label class="form-label"><br></br>
           Note:
-          <input type="text" onChange={this.inputNote} />
+          <input type="text" class="form-control" onChange={this.inputNote} />
         </label>
       </form>
       <AlgoSendButton
