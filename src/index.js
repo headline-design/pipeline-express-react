@@ -66,7 +66,7 @@ export class Pipeline {
       })
         .then(response => response.json())
         .then(data => {
-          return JSON.stringify(data.txId);
+          return data.txId;
         })
         .catch(error => {
           console.error('Error:', error)

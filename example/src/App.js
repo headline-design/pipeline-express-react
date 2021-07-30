@@ -57,7 +57,7 @@ class App extends Component {
       context={this}
       returnTo={"txID"}// string value of state key to return the transaction id
       />
-      <h3>{"Transaction ID: " + this.state.txID.slice(1, -1)}</h3>
+      <h3>{"Transaction ID: " + this.state.txID}</h3>
 </div>
   }
 }
