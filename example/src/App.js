@@ -9,6 +9,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      main: true,
       myAddress: "",
       recipient: "",
       amount: 0,
@@ -28,10 +29,23 @@ class App extends Component {
   inputNote = (event) => {
     this.setState({note: event.target.value});
   }
-  
+
+  handleCheckChange = () => {
+  this.setState({main: ! this.state.main}, () => Pipeline.main = this.state.main)
+
+  }
+
   render() {
     return <div align="center" class="card"><img alt="Pipeline Express" src={logo} width="300"></img><br></br>
       <AlgoButton wallet={myAlgoWallet} context={this} returnTo={"myAddress"} />
+      <label>
+        MainNet:
+        <input
+          name="mainnet" 
+          type="checkbox"
+          checked={this.state.main}
+          onChange={this.handleCheckChange} />
+      </label>
       <h3>{"My Address: " + this.state.myAddress}</h3>
       <form >
         <label class= "form-label">

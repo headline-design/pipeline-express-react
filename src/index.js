@@ -3,8 +3,36 @@ import styles from './styles.module.css'
 import MyAlgo from '@randlabs/myalgo-connect'
 
 export class Pipeline {
+
   static init() {
-    return new MyAlgo()
+    this.main = true;
+    this.address = "";
+    this.txID = "";
+    this.myBalance = 0;
+    return new MyAlgo();
+  }
+
+  static async balance(address) {
+
+    let indexerURL = 'https://'
+
+    if (this.main == true) {
+      indexerURL = indexerURL + 'algoexplorerapi.io/idx2/v2/accounts/'
+    }
+    else {
+      indexerURL = indexerURL + "testnet.algoexplorerapi.io/idx2/v2/accounts/"
+    }
+
+    let url2 = indexerURL + address
+    try {
+      let data = await fetch(url2)
+      let data2 = await data.json()
+      let data3 = JSON.stringify(data2.account.amount / 1000000) + ' Algos'
+      this.myBalance = data3;
+      return data3
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   static async connect(wallet) {
@@ -12,16 +40,28 @@ export class Pipeline {
       const accounts = await wallet.connect()
       let item1 = accounts[0]
       item1 = item1['address']
-      return item1
+      this.address = item1;
+      return item1;
     } catch (err) {
       console.error(err)
     }
   }
 
-  static async send(address, amt, myNote, sendingAddress, wallet, index = 0) {
+  static async send(address, amt, myNote, _sendingAddress, wallet, index = 0) {
+
+    let paramServer = 'https://'
+    let transServer = 'https://'
+
+    if (this.main == true) {
+      paramServer = paramServer + 'algoexplorerapi.io/v2/transactions/params/'
+      transServer = transServer + 'algoexplorerapi.io/v2/transactions/'
+    }
+    else {
+      paramServer = paramServer + "testnet.algoexplorerapi.io/v2/transactions/params/"
+      transServer = transServer + "testnet.algoexplorerapi.io/v2/transactions/"
+    }
+
     const algodToken = '0'
-    const paramServer = 'https://algoexplorerapi.io/v2/transactions/params'
-    const transServer = 'https://algoexplorerapi.io/v2/transactions'
 
     var buf = new Array(myNote.length)
     var encodedNote = new Uint8Array(buf)
@@ -35,7 +75,7 @@ export class Pipeline {
       const params = await (await fetch(paramServer)).json()
 
       let txn = {
-        from: sendingAddress,
+        from: this.address,
         to: address,
         amount: parseInt(amt),
         note: encodedNote,
@@ -53,6 +93,11 @@ export class Pipeline {
         txn.assetIndex = parseInt(index)
       }
 
+      if (this.main == false) {
+        txn.genesisID = 'testnet-v1.0'
+        txn.genesisHash = 'SGO1GKSzyE7IEPItTxCByw9x8FmnrCDexi9/cOUJOiI='
+      }
+
       console.log(txn)
 
       const signedTxn = await wallet.signTransaction(txn)
@@ -66,12 +111,13 @@ export class Pipeline {
       })
         .then(response => response.json())
         .then(data => {
-          return data.txId;
+          return data.txId
         })
         .catch(error => {
           console.error('Error:', error)
         })
 
+      this.txID = transactionID
       return transactionID
     } catch (err) {
       console.error(err)
@@ -79,54 +125,60 @@ export class Pipeline {
   }
 }
 
-export const AlgoSendButton = ({
-  index,
-  recipient,
-  amount,
-  note,
-  myAddress,
-  wallet,
-  context,
-  returnTo
-}) => {
+export const AlgoSendButton = (props) => {
+
   return (
-    <button
-      className={styles.AlgoSendButton}
-      onClick={
-        () => {
+    <div>
+      <button
+        className={styles.AlgoSendButton}
+        onClick={() => {
           Pipeline.send(
-            recipient,
-            parseInt(amount),
-            note,
-            myAddress,
-            wallet,
-            index
+            props.recipient,
+            parseInt(props.amount || 1),
+            props.note || "",
+            Pipeline.myAddress,
+            props.wallet,
+            props.index || 0
           ).then(data => {
             if (typeof data !== 'undefined') {
-              const object = {}
-              object[returnTo] = data
-              context.setState(object)
+              if (props.returnTo !== undefined) {
+                const object = {}
+                object[props.returnTo] = data
+                props.context.setState(object)
+              }
+              if (typeof props.onChange === "function") {
+                props.onChange(data)
+              }
             }
           })
-        }
-      }
-    >
-      Send
-    </button>
+        }}
+      >
+        Send
+      </button>
+    </div>
   )
 }
 
-export const AlgoButton = ({ wallet, context, returnTo}) => {
+export const AlgoButton = (props) => {
+
   return (
     <button
       className={styles.AlgoButton}
       onClick={() => {
-        Pipeline.connect(wallet).then(accounts => {
-          const data = {};
-          data[returnTo] = accounts;
-          context.setState(data);
+        Pipeline.connect(props.wallet).then(accounts => {
+
+          if (props.returnTo !== undefined) {
+            const data = {};
+            data[props.returnTo] = accounts;
+            props.context.setState(data);
+          }
+          if (typeof props.onChange === "function") {
+            props.onChange(accounts)
+          }
         })
       }}
-    >Connect to MyAlgo</button>
+    >
+      Connect to MyAlgo
+    </button>
   )
 }
