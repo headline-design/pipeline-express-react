@@ -35,6 +35,7 @@ class App extends Component {
 
   }
 
+
   render() {
     return <div align="center" class="card"><img alt="Pipeline Express" src={logo} width="300"></img><br></br>
       <AlgoButton wallet={myAlgoWallet} context={this} returnTo={"myAddress"} />
