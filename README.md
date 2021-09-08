@@ -4,11 +4,21 @@
 
 [![NPM](https://img.shields.io/npm/v/pipeline-express-react.svg)](https://www.npmjs.com/package/pipeline-express-react) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
-## Install Library and run example
+## Install Library in your project
 
 ```bash
 npm install pipeline-express-react
 ```
+
+## Run included example: 
+
+After downloading the example folder, from within the folder run:
+
+```bash
+npm install
+npm run start
+```
+
 
 ## Usage
 See included example.
