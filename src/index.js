@@ -8,7 +8,7 @@ import { encode, decode } from "algo-msgpack-with-bigint";
 import base32 from 'hi-base32';
 
 
-export default class Pipeline {
+export class Pipeline {
 
     static init() {
         this.index = 0;
