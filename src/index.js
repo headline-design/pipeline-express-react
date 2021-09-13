@@ -11,6 +11,12 @@ import base32 from 'hi-base32';
 export class Pipeline {
 
     static init() {
+        this.EnableDeveloperAPI = false;
+        this.indexer = "http://localhost:8980";
+        this.algod = "http://localhost:4001";
+        this.token = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+        this.devGenHash = "sC3P7e2SdbqKJK0tbiCdK9tdSpbe6XeCGKdoNzmlj0E="
+        this.devGenId = "devnet-v1.0"
         this.index = 0;
         this.pipeConnector = "myAlgoWallet";
         this.main = true;
@@ -34,6 +40,8 @@ export class Pipeline {
         else {
             indexerURL = indexerURL + "testnet.algoexplorerapi.io/idx2/v2/accounts/"
         }
+
+        if (this.EnableDeveloperAPI === true) { indexerURL = this.indexer + "/v2/accounts/" }
 
         let url2 = indexerURL + address
         try {
@@ -63,7 +71,7 @@ export class Pipeline {
 
         else {
 
-          this.connector.on("connect", (error, payload) => {
+            this.connector.on("connect", (error, payload) => {
                 if (error) {
                     throw error;
                 }
@@ -93,25 +101,16 @@ export class Pipeline {
 
         const getAddress = new Promise((resolve, reject) => {
             setTimeout(() => {
-              resolve(this.connector.accounts[0]);
+                resolve(this.connector.accounts[0]);
             }, 10000);
-          });
-    
+        });
 
-            const address = await getAddress;
-            return address;
+
+        const address = await getAddress;
+        return address;
     }
 
     static async walletConnectSign(mytxnb) {
-
-        const suggestedParams = {
-            flatFee: true,
-            fee: 1000,
-            firstRound: mytxnb.firstRound,
-            lastRound: mytxnb.lastRound,
-            genesisID: mytxnb.genesisID,
-            genesisHash: mytxnb.genesisHash,
-        }
 
         let prototxn = {
             "amt": mytxnb.amount,
@@ -197,7 +196,10 @@ export class Pipeline {
             transServer = transServer + "testnet.algoexplorerapi.io/v2/transactions/"
         }
 
-        const algodToken = '0'
+        if (this.EnableDeveloperAPI === true) {
+            paramServer = this.algod + "/v2/transactions/params/";
+            transServer = this.algod + "/v2/transactions/";
+        }
 
         var buf = new Array(myNote.length)
         var encodedNote = new Uint8Array(buf)
@@ -208,7 +210,20 @@ export class Pipeline {
         console.log('My encoded note: ' + encodedNote)
 
         try {
-            const params = await (await fetch(paramServer)).json()
+            let params = {};
+            if (this.EnableDeveloperAPI === false) {
+                params = await (await fetch(paramServer)).json()
+            }
+            else {
+                params = await (await fetch(paramServer, {
+                    method: "GET",
+                    headers: {
+                        'X-Algo-API-Token': this.token,
+                    }
+                })).json()
+                console.log("Params: " + JSON.stringify(params))
+            }
+
 
             let txn = {
                 from: this.address,
@@ -236,6 +251,13 @@ export class Pipeline {
                 txn.genesisHash = 'SGO1GKSzyE7IEPItTxCByw9x8FmnrCDexi9/cOUJOiI=';
             }
 
+            if (this.EnableDeveloperAPI === true) {
+                txn.genesisID = this.devGenId;
+                txn.genesisHash = this.devGenHash;
+            }
+
+            console.log(txn);
+
             let signedTxn = {};
 
             if (this.pipeConnector === "myAlgoWallet") {
@@ -248,11 +270,17 @@ export class Pipeline {
 
             console.log(signedTxn)
 
+            let requestHeaders = { 'Content-Type': 'application/x-binary' };
+
+            if (this.EnableDeveloperAPI === true) {
+                requestHeaders = {
+                    'X-Algo-API-Token': this.token
+                }
+            }
+
             let transactionID = await fetch(transServer, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-binary',
-                },
+                headers: requestHeaders,
                 body: signedTxn
             })
                 .then(response => response.json())
@@ -306,7 +334,6 @@ export const AlgoSendButton = (props) => {
 }
 
 export const AlgoButton = (props) => {
-
     return (
         <button
             className={styles.AlgoButton}
