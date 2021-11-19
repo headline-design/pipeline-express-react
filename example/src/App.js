@@ -40,15 +40,15 @@ class App extends Component {
     return <div align="center" class="card">    
     <img alt="Pipeline Express" src={logo} width="300"></img><br></br>
     <div class="toggle-select">
-    <label>Net Select</label>
-    <label>
+    <h5>
     MainNet:
-    <input
+  </h5>
+  <input
+      className="form-check-input"
       name="mainnet" 
       type="checkbox"
       checked={this.state.main}
       onChange={this.handleCheckChange} />
-  </label>
   </div>            
       <AlgoButton wallet={myAlgoWallet} context={this} returnTo={"myAddress"} />
       <h3>{"My Address: " + this.state.myAddress}</h3>
