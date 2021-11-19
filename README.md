@@ -29,6 +29,7 @@ Copy and paste the following code, install the dependencies and send an Algorand
 ```jsx
 import React, {Component} from 'react'
 import { AlgoButton, AlgoSendButton, Pipeline} from 'pipeline-express-react'
+import 'pipeline-express-react/dist/index.css';
 
 const myAlgoWallet = Pipeline.init();
 class App extends Component {
