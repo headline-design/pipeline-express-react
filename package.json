@@ -51,13 +51,6 @@
     "dist"
   ],
   "dependencies": {
-    "@json-rpc-tools/utils": "^1.7.6",
-    "@msgpack/msgpack": "^2.7.1",
-    "@randlabs/myalgo-connect": "^1.1.1",
-    "@walletconnect/client": "^1.6.5",
-    "algo-msgpack-with-bigint": "^2.1.1",
-    "algorand-walletconnect-qrcode-modal": "^1.6.1",
-    "hi-base32": "^0.5.1",
-    "tslib": "2.3.1"
+    "@pipeline-ui-2/pipeline": ">= 1.2.5"
   }
 }
