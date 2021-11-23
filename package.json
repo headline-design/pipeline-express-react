@@ -51,6 +51,6 @@
     "dist"
   ],
   "dependencies": {
-    "@pipeline-ui-2/pipeline": ">= 1.2.5"
+    "@pipeline-ui-2/pipeline": "1.2.7"
   }
 }
