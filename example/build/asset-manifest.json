@@ -1,21 +1,21 @@
 {
   "files": {
     "main.css": "./static/css/main.bfb95440.chunk.css",
-    "main.js": "./static/js/main.ecabcfed.chunk.js",
-    "main.js.map": "./static/js/main.ecabcfed.chunk.js.map",
+    "main.js": "./static/js/main.b7fff393.chunk.js",
+    "main.js.map": "./static/js/main.b7fff393.chunk.js.map",
     "runtime-main.js": "./static/js/runtime-main.c0d22b90.js",
     "runtime-main.js.map": "./static/js/runtime-main.c0d22b90.js.map",
-    "static/js/2.1a09c089.chunk.js": "./static/js/2.1a09c089.chunk.js",
-    "static/js/2.1a09c089.chunk.js.map": "./static/js/2.1a09c089.chunk.js.map",
+    "static/js/2.442750f0.chunk.js": "./static/js/2.442750f0.chunk.js",
+    "static/js/2.442750f0.chunk.js.map": "./static/js/2.442750f0.chunk.js.map",
     "index.html": "./index.html",
     "static/css/main.bfb95440.chunk.css.map": "./static/css/main.bfb95440.chunk.css.map",
-    "static/js/2.1a09c089.chunk.js.LICENSE.txt": "./static/js/2.1a09c089.chunk.js.LICENSE.txt",
+    "static/js/2.442750f0.chunk.js.LICENSE.txt": "./static/js/2.442750f0.chunk.js.LICENSE.txt",
     "static/media/pipeline-express.1dec43b1.jpg": "./static/media/pipeline-express.1dec43b1.jpg"
   },
   "entrypoints": [
     "static/js/runtime-main.c0d22b90.js",
-    "static/js/2.1a09c089.chunk.js",
+    "static/js/2.442750f0.chunk.js",
     "static/css/main.bfb95440.chunk.css",
-    "static/js/main.ecabcfed.chunk.js"
+    "static/js/main.b7fff393.chunk.js"
   ]
 }

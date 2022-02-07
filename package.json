@@ -1,6 +1,6 @@
 {
   "name": "pipeline-express-react",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "description": "Pipeline UI lite for quickly connecting to MyAlgo and sending transactions in React apps",
   "author": "headline-design",
   "license": "MIT",
@@ -51,6 +51,6 @@
     "dist"
   ],
   "dependencies": {
-    "@pipeline-ui-2/pipeline": "1.2.7"
+    "@pipeline-ui-2/pipeline": "1.3.2"
   }
 }
